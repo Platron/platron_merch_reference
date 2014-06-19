@@ -176,7 +176,7 @@ class PG_Signature {
 			 */
 			$name = $parent_name . $tag->getName().sprintf('%03d', $i);
 
-			if ( $tag->children() ) {
+			if ( $tag->children()->count() > 0 ) {
 				$arrParams = array_merge($arrParams, self::makeFlatParamsXML($tag, $name));
 				continue;
 			}
