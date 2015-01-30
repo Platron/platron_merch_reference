@@ -85,7 +85,7 @@ class PG_Signature {
 		foreach ( $arrParams as $key => $val ) {
 			
 			$i++;
-			if ( 'pg_sig' == $key )
+			if ( 'pg_sig' === $key )
 				continue;
 				
 			/**
