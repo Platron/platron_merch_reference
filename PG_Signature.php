@@ -167,7 +167,7 @@ class PG_Signature {
 		foreach ( $xml->children() as $tag ) {
 			
 			$i++;
-			if ( 'pg_sig' == $tag->getName() )
+			if ( 'pg_sig' === $tag->getName() )
 				continue;
 				
 			/**
