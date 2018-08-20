@@ -51,7 +51,7 @@ if(!empty($_POST['platron'])){
 				<td><input type="text" name="amount"></td>
 			</tr>
 			<tr>
-				<td colspan="2"><input type="submit" name="platron"><td>
+				<td colspan="2"><input type="submit" name="platron" value="Пожертвовать"><td>
 			</tr>
 		</table>
 	</form>
