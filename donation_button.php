@@ -1,23 +1,21 @@
 <?php
-
 require_once 'PG_Signature.php';
 
 $MERCHANT_ID = 13;
 $MERCHANT_SECRET_KEY = "secret_key";
 
-if(!empty($_POST['platron'])){
+if (!empty($_POST['platron'])) {
 	$arrReq = array();
-
 	/* Обязательные параметры */
-	$arrReq['pg_merchant_id'] = $MERCHANT_ID;// Идентификатор магазина
-	$arrReq['pg_amount']      = $_REQUEST['amount'];		// Сумма заказа
+	$arrReq['pg_merchant_id'] = $MERCHANT_ID; // Идентификатор магазина
+	$arrReq['pg_amount'] = $_REQUEST['amount']; // Сумма заказа
 	$arrReq['pg_description'] = $_REQUEST['description']; // Описание заказа (показывается в Платёжной системе)
 
 	$arrReq['pg_salt'] = rand(21,43433);
 	$arrReq['pg_sig'] = PG_Signature::make('payment.php', $arrReq, $MERCHANT_SECRET_KEY);
 	$query = http_build_query($arrReq);
 
-	header("Location: https://www.platron.ru/payment.php?$query");
+	header("Location: https://www.platron.ru/payment.php?{$query}");
 }
 
 ?>
