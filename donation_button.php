@@ -38,15 +38,18 @@ if (!empty($_POST['platron'])) {
 		Можно создать форму для ввода суммы и описания платежа и разместить такую форму на своем сайте.
 		После ввода данных и нажатия кнопки "Оплатить" пользователь будет отправлен на сайт Плтарон на форму выбора платежной системы.		
 	</p>
+	<p>
+		Для упрощения кода, в примере не производится проверка введенных пользователем данных.
+	</p>
 	<form name="platron_payment" method="POST">
 		<table>
 			<tr>
 				<td>Описание: </td>
-				<td><input type="text" name="description">
+				<td><input type="text" name="description" placeholder="Пожертвование">
 			</tr>
 			<tr>
 				<td>Сумма: </td> 
-				<td><input type="text" name="amount"></td>
+				<td><input type="text" name="amount" placeholder="100"></td>
 			</tr>
 			<tr>
 				<td colspan="2"><input type="submit" name="platron" value="Пожертвовать"><td>
