@@ -13,7 +13,7 @@ if (!empty($_POST['platron'])) {
 
 	$parameters['pg_salt'] = rand(21,43433);
 	$parameters['pg_sig'] = PG_Signature::make('payment.php', $parameters, $MERCHANT_SECRET_KEY);
-	
+
 	header("Location: https://www.platron.ru/payment.php?" . http_build_query($parameters));
 }
 
@@ -40,20 +40,53 @@ if (!empty($_POST['platron'])) {
 	<p>
 		Для упрощения кода, в примере не производится проверка введенных пользователем данных.
 	</p>
-	<form name="platron_payment" method="POST">
-		<table>
-			<tr>
-				<td>Описание: </td>
-				<td><input type="text" name="description" placeholder="Пожертвование">
-			</tr>
-			<tr>
-				<td>Сумма: </td> 
-				<td><input type="text" name="amount" placeholder="100"></td>
-			</tr>
-			<tr>
-				<td colspan="2"><input type="submit" name="platron" value="Пожертвовать"><td>
-			</tr>
-		</table>
-	</form>
+	<section>
+		<h3>Форма пожертвования</h3>
+		<form name="platron_payment" method="post">
+			<table>
+				<tr>
+					<td>Описание: </td>
+					<td><input type="text" name="description" placeholder="Пожертвование"></td>
+				</tr>
+				<tr>
+					<td>Сумма: </td> 
+					<td><input type="text" name="amount" placeholder="100"></td>
+				</tr>
+				<tr>
+					<td colspan="2"><input type="submit" name="simple" value="Пожертвовать"><td>
+				</tr>
+			</table>
+		</form>
+	</section>
+	<p>
+		Помимо однократной оплаты, есть возможность создать автоматический регулярный платеж.
+		Регулярный платеж поддерживают только банковские платежные системы.
+	</p>
+	<section>
+		<h3>Регулярное пожертвование</h3>
+		<form name="platron_regular_payment" method="post">
+			<table>
+				<tr>
+					<td>Описание: </td>
+					<td><input type="text" name="description" placeholder="Пожертвование"></td>
+				</tr>
+				<tr>
+					<td>Сумма: </td> 
+					<td><input type="text" name="amount" placeholder="100"></td>
+				</tr>
+				<tr>
+					<td>Раз в неделю в течении месяца</td>
+					<td><input type="radio" name="regular_type" value="per_week" checked></td>
+				</tr>
+				<tr>
+					<td>Раз в месяц</td>
+					<td><input type="radio" name="regular_type" value="per_month"></td>
+				</tr>
+				<tr>
+					<td colspan="2"><input type="submit" name="regular" value="Пожертвовать"><td>
+				</tr>
+			</table>
+		</form>
+	</section>
 </body>
 </html>
