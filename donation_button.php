@@ -28,8 +28,18 @@ if(!empty($_POST['platron'])){
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Donation button example</title>
+	<style>
+		body {width: 800px;}
+	</style>
 </head>
 <body>
+	<h1>Пример формы для пожертвования</h1>
+	<h2>Описание</h2>
+	<p>
+		Пример демонстрирует простой способ интеграции, используемый, например, для сбора пожертвований.
+		Можно создать форму для ввода суммы и описания платежа и разместить такую форму на своем сайте.
+		После ввода данных и нажатия кнопки "Оплатить" пользователь будет отправлен на сайт Плтарон на форму выбора платежной системы.		
+	</p>
 	<form name="platron_payment" method="POST">
 		<table>
 			<tr>
