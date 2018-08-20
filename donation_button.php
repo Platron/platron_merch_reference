@@ -30,16 +30,16 @@ if (!empty($_POST['regular'])) {
 		$parameters['pg_payment_system'] = 'TESTCARD'; // Тестовая платежная система поддерживающая рекуррентные платежи
 		$parameters['pg_recurring_start'] = '1'; // Включает создание рекуррентного профиля
 		$parameters['pg_schedule']['pg_amount'] = $_REQUEST['amount']; // Сумма автоматического платежа
-		if ($_POST['regular_type'] === 'per_week') {
+		if ($_POST['regular_type'] === 'per_two_week') {
 			$parameters['pg_schedule']['pg_template'] = array(
-				'pg_start_date' => date('Y-m-d H:i:s', '+1 week'), // Дата первого автоматического платежа
+				'pg_start_date' => (new DateTime('+1 week'))->format('Y-m-d H:i:s'), // Дата первого автоматического платежа
 				'pg_interval' => 'week', // Интервал автоматического платежа
 				'pg_period' => '2', // Период автоматического платежа, используется с pg_interval. 2 week означает 1 раз в 2 недели
 				'pg_max_periods' => '4', // Максимальное число автоматических платежей
 			);
 		} elseif ($_POST['regular_type'] === 'per_month') {
 			$parameters['pg_schedule']['pg_template'] = array(
-				'pg_start_date' => date('Y-m-d H:i:s', '+1 month'), // Дата первого автоматического платежа
+				'pg_start_date' => (new DateTime('+1 month'))->format('Y-m-d H:i:s'), // Дата первого автоматического платежа
 				'pg_interval' => 'month', // Интервал автоматического платежа
 				'pg_period' => '1', // Период автоматического платежа, используется с pg_interval. 1 month означает 1 раз в месяц
 				// Так как pg_max_periods не указан, автоматические платежи будут совершаться пока действителен рекуррентный профиль
