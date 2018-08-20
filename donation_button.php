@@ -13,9 +13,8 @@ if (!empty($_POST['platron'])) {
 
 	$parameters['pg_salt'] = rand(21,43433);
 	$parameters['pg_sig'] = PG_Signature::make('payment.php', $parameters, $MERCHANT_SECRET_KEY);
-	$query = http_build_query($parameters);
-
-	header("Location: https://www.platron.ru/payment.php?{$query}");
+	
+	header("Location: https://www.platron.ru/payment.php?" . http_build_query($parameters));
 }
 
 ?>
