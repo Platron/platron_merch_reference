@@ -4,12 +4,48 @@ require_once 'PG_Signature.php';
 $MERCHANT_ID = 13; // Ваш идентификатор магазина merchant_id
 $MERCHANT_SECRET_KEY = "secret_key"; // Ваш секретный ключ secret_key
 
-if (!empty($_POST['platron'])) {
+// Обработка однократной оплаты
+if (!empty($_POST['simple'])) {
 	$parameters = array();
-	/* Обязательные параметры */
 	$parameters['pg_merchant_id'] = $MERCHANT_ID; // Идентификатор магазина
+	$parameters['pg_testing_mode'] = '1'; // Включает тестовый режим, используется для тестирования
 	$parameters['pg_amount'] = $_REQUEST['amount']; // Сумма заказа
 	$parameters['pg_description'] = $_REQUEST['description']; // Описание заказа (показывается в Платёжной системе)
+
+	$parameters['pg_salt'] = rand(21,43433);
+	$parameters['pg_sig'] = PG_Signature::make('payment.php', $parameters, $MERCHANT_SECRET_KEY);
+
+	header("Location: https://www.platron.ru/payment.php?" . http_build_query($parameters));
+}
+
+// Обработка регулярной оплаты
+if (!empty($_POST['regular'])) {
+	$parameters = array();
+	$parameters['pg_merchant_id'] = $MERCHANT_ID; // Идентификатор магазина
+	$parameters['pg_testing_mode'] = '1'; // Включает тестовый режим, используется для тестирования
+	$parameters['pg_amount'] = $_REQUEST['amount']; // Сумма заказа
+	$parameters['pg_description'] = $_REQUEST['description']; // Описание заказа (показывается в Платёжной системе)
+
+	if (isset($_POST['regular_type'])) {
+		$parameters['pg_payment_system'] = 'TESTCARD'; // Тестовая платежная система поддерживающая рекуррентные платежи
+		$parameters['pg_recurring_start'] = '1'; // Включает создание рекуррентного профиля
+		$parameters['pg_schedule']['pg_amount'] = $_REQUEST['amount']; // Сумма автоматического платежа
+		if ($_POST['regular_type'] === 'per_week') {
+			$parameters['pg_schedule']['pg_template'] = array(
+				'pg_start_date' => date('Y-m-d H:i:s', '+1 week'), // Дата первого автоматического платежа
+				'pg_interval' => 'week', // Интервал автоматического платежа
+				'pg_period' => '2', // Период автоматического платежа, используется с pg_interval. 2 week означает 1 раз в 2 недели
+				'pg_max_periods' => '4', // Максимальное число автоматических платежей
+			);
+		} elseif ($_POST['regular_type'] === 'per_month') {
+			$parameters['pg_schedule']['pg_template'] = array(
+				'pg_start_date' => date('Y-m-d H:i:s', '+1 month'), // Дата первого автоматического платежа
+				'pg_interval' => 'month', // Интервал автоматического платежа
+				'pg_period' => '1', // Период автоматического платежа, используется с pg_interval. 1 month означает 1 раз в месяц
+				// Так как pg_max_periods не указан, автоматические платежи будут совершаться пока действителен рекуррентный профиль
+			);
+		}
+	}
 
 	$parameters['pg_salt'] = rand(21,43433);
 	$parameters['pg_sig'] = PG_Signature::make('payment.php', $parameters, $MERCHANT_SECRET_KEY);
@@ -75,11 +111,11 @@ if (!empty($_POST['platron'])) {
 					<td><input type="text" name="amount" placeholder="100"></td>
 				</tr>
 				<tr>
-					<td>Раз в неделю в течении месяца</td>
-					<td><input type="radio" name="regular_type" value="per_week" checked></td>
+					<td>Четыре платежа раз в две недели</td>
+					<td><input type="radio" name="regular_type" value="per_two_week" checked></td>
 				</tr>
 				<tr>
-					<td>Раз в месяц</td>
+					<td>Патеж каждый месяц</td>
 					<td><input type="radio" name="regular_type" value="per_month"></td>
 				</tr>
 				<tr>
